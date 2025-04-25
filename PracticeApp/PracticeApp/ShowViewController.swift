@@ -46,7 +46,7 @@ class ShowViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }catch let er as NSError{
             print(er)
         }
-    }
+    }			
     	
     override func viewWillAppear(_ animated: Bool) {
         loadData()

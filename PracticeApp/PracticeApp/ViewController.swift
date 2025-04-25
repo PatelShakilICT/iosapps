@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
 
@@ -20,11 +21,21 @@ class ViewController: UIViewController {
     }
 
     @IBAction func btnLogin(_ sender: Any) {
-        if username.text == "admin" && password.text == "admin" {
-            
-            navigationController?.pushViewController(storyboard?.instantiateViewController(withIdentifier: "home") as! TabViewController, animated: true)
-            
+        let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        do{
+            let req = Student.fetchRequest()
+            req.predicate = NSPredicate(format: "name == %@ AND id", username.text!,password.text!)
+            let res = try moc.fetch(req)
+            if res.count > 0 {
+                navigationController?.pushViewController(storyboard?.instantiateViewController(withIdentifier: "home") as! TabViewController, animated: true)
+            }else{
+                print("Invalid credentials")
+            }
+        }catch let er as NSError{
+            print(er)
         }
+        
     }
     
 }
